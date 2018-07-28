@@ -1,7 +1,7 @@
-Charity Donations
+Simple Mern App
 ===================
 
-A simple contacts manager system using MongoDB, Express.js, React/Reducx, and Node.js
+A contacts manager system using MongoDB, Express.js, React/Reducx, and Node.js
 
 ## Getting Started
 
