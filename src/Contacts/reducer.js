@@ -16,12 +16,12 @@ export default (state = defaultState, action = {}) => {
     case 'FETCH_CONTACTS_SUCCESS':
       return {
         ...state,
-        contacts: action.payload.contacts,
+        contacts: action.payload,
       };
     case 'FETCH_CONTACTS_FAILED':
       return {
         ...state,
-        contacts: action.error,
+        error: action.error,
       };
     case 'FETCH_CONTACT_REQUEST':
       return {
@@ -37,7 +37,7 @@ export default (state = defaultState, action = {}) => {
     case 'FETCH_CONTACT_FAILED':
       return {
         ...state,
-        selectedContact: action.error,
+        error: action.error,
       };
     case 'DELETE_CONTACT_REQUEST': {
       return {

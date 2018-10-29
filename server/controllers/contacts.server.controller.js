@@ -20,7 +20,7 @@ export const addContact = (req, res) => {
 export const updateContact = (req, res) => {
   Contact.findByIdAndUpdate(req.body._id, req.body, { new: true }, (err, contact) => {
     if (err) {
-      if (err) return res.status(500).send(err);
+      if (err) return res.status(404).send({ message: 'Contact not found' });
     }
     return res.json({ success: true, message: 'Updated successfully', contact });
   });

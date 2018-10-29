@@ -1,4 +1,6 @@
 const path = require('path');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+
 
 const DIST_DIR = path.resolve(__dirname, 'dist');
 const SRC_DIR = path.resolve(__dirname, 'src');
@@ -8,6 +10,7 @@ const config = {
   output: {
     path: DIST_DIR,
     filename: 'bundle.js',
+    publicPath: '/',
   },
   performance: {
     hints: false,
@@ -42,5 +45,11 @@ const config = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: './src/index.html',
+      filename: './index.html',
+    }),
+  ],
 };
 module.exports = config;

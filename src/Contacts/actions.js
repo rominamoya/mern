@@ -5,25 +5,22 @@ const apiUrl = '/api';
 export const fetchContacts = () =>
   (dispatch) => {
     dispatch(contactActionCreators.fetchContactsRequest());
-    return fetch(apiUrl)
+    return axios.get(apiUrl, {}, { 'Content-Type': 'application/application/json' })
       .then((response) => {
-        if (response.ok) {
-          response.json().then((data) => {
-            dispatch(contactActionCreators.fetchContactsSuccess(data));
-          });
-        } else {
-          response.json().then((error) => {
-            dispatch(contactActionCreators.fetchContactsFailed(error));
-          });
-        }
+        dispatch(contactActionCreators.fetchContactsSuccess(response.data.contacts));
+      })
+      .catch((error) => {
+        dispatch(contactActionCreators.fetchContactsFailed(error));
+        return Promise.reject(error);
       });
   };
+
+
 export const addContact = contact => (dispatch) => {
   dispatch(contactActionCreators.addContactRequest(contact));
   return axios.post(apiUrl, contact, { 'Content-Type': 'application/application/json' })
     .then((response) => {
       dispatch(contactActionCreators.addContactSuccess(response.data.contact));
-      // browserHistory.push('/');
     })
     .catch((error) => {
       dispatch(contactActionCreators.addContactFailed(error));
@@ -32,19 +29,13 @@ export const addContact = contact => (dispatch) => {
 
 export const deleteContact = id => (dispatch) => {
   dispatch(contactActionCreators.deleteContactRequest(id));
-  return fetch(`${apiUrl}/${id}`, {
-    method: 'delete',
-  }).then((response) => {
-    if (response.ok) {
-      response.json().then((data) => {
-        dispatch(contactActionCreators.deleteContactSuccess(data._id));
-      });
-    } else {
-      response.json().then((error) => {
-        dispatch(contactActionCreators.deleteContactFailed(error));
-      });
-    }
-  });
+  return axios.delete(`${apiUrl}/${id}`)
+    .then((response) => {
+      dispatch(contactActionCreators.deleteContactSuccess(response.data._id));
+    })
+    .catch((error) => {
+      dispatch(contactActionCreators.deleteContactFailed(error));
+    });
 };
 
 export const fetchContact = id => (dispatch) => {
@@ -57,6 +48,7 @@ export const fetchContact = id => (dispatch) => {
       dispatch(contactActionCreators.fetchContactFailed(error));
     });
 };
+
 
 export const updateContact = contact => (dispatch) => {
   dispatch(contactActionCreators.updateContactRequest(contact));

@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
+import { withSnackbar } from 'notistack';
 import ListComponent from './ListComponent';
 import { fetchContacts, deleteContact } from './actions';
 
@@ -17,7 +18,8 @@ class ContactListContainer extends Component {
   }
 
   componentDidMount = () => {
-    this.props.fetchContacts();
+    this.props.fetchContacts()
+      .catch(() => this.props.enqueueSnackbar(this.props.error, { variant: 'error', anchorOrigin: { vertical: 'top', horizontal: 'center' } }));
   }
 
   render() {
@@ -36,21 +38,28 @@ class ContactListContainer extends Component {
   }
 }
 
+ContactListContainer.defaultProps = {
+  error: '',
+};
+
 ContactListContainer.propTypes = {
   contacts: PropTypes.array.isRequired,
+  error: PropTypes.string,
   deleteContact: PropTypes.func.isRequired,
   fetchContacts: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   contacts: state.contactStore.contacts,
+  error: state.contactStore.error,
 });
 
 const matchDispatchToProps = dispatch =>
   bindActionCreators({ fetchContacts, deleteContact }, dispatch);
 
 
-export default connect(
+export default withSnackbar(connect(
   mapStateToProps,
   matchDispatchToProps,
-)(ContactListContainer);
+)(ContactListContainer));

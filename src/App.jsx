@@ -1,22 +1,21 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import FormContainer from './Contacts/FormContainer';
-import ListContainer from './Contacts/ListContainer';
+
+import routes from './routes';
 
 class App extends React.PureComponent {
   constructor() {
     super();
-    this.state = {
-    };
+    this.state = {};
   }
 
   render() {
     return (
-      <Router >
+      <Router>
         <div>
-          <Route exact path="/" component={ListContainer} />
-          <Route path="/contacts/new" render={() => <FormContainer {...this.props} />} />
-          <Route path="/contacts/edit/:id" render={() => <FormContainer {...this.props} />} />
+          {routes.map(route => (
+            <Route exact path={route.path} component={route.component} />
+        ))}
         </div>
       </Router>
     );
